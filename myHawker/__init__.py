@@ -15,4 +15,4 @@ def westernDelights():
     return render_template('westernDelights.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 
