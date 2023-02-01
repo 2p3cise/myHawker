@@ -17,3 +17,18 @@ body {
 .indiandesc {
     text-align: center;
 }
+
+h1 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 35px;
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+p {
+  font-style: normal;
+  font-size: 20px;
+  text-align: center;
+}
