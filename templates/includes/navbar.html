@@ -1,34 +1,41 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="background-color: #FFF8EE">
-    <div class="container-fluid">
-      <img src="{{ url_for('static', filename= 'images/logo.jpg')}}" alt="Mike" height="100px" width="140px">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Menu</a>
-            <ul class="dropdown-menu">
-             <li><a class="dropdown-item" href="/indianCuisine">Indian Cuisine</a></li>
-             <li><a class="dropdown-item" href="/westernDelights">Western</a></li>
-             </ul>
-           </li>
-           <li class="nav-item">
-            <a class="nav-link" href="/gacha">Gacha</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/contactus">Contact Us</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/feedback">Feedback</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
-          </li>
-        </ul>
-      </div>
+  <div class="container-fluid">
+    <img src="{{ url_for('static', filename= 'images/logo.jpg')}}" alt="Mike" height="100px" width="140px">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Menu</a>
+          <ul class="dropdown-menu">
+           <li><a class="dropdown-item" href="/indiancuisine">Indian Cuisine</a></li>
+           <li><a class="dropdown-item" href="/westerncuisine">Western</a></li>
+           </ul>
+         </li>
+         <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Dishes</a>
+          <ul class="dropdown-menu">
+           <li><a class="dropdown-item" href="/createDish">Create Dish</a></li>
+           <li><a class="dropdown-item" href="/retrieveDish">Retrieve Dish</a></li>
+           </ul>
+         </li>
+         <li class="nav-item">
+          <a class="nav-link" href="/gacha">Gacha</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contactus">Contact Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/feedback">Feedback</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
