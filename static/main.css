@@ -1,3 +1,19 @@
 body {
     background: #FFF8EE;
     }
+
+.coverpic {
+    opacity: 0.5;
+}
+
+.col-lg-12 {
+    text-align: center;
+}
+
+.indianheader {
+    text-align: center;
+}
+
+.indiandesc {
+    text-align: center;
+}
