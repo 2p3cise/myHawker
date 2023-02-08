@@ -33,8 +33,23 @@ def feedback():
 
         db.close()
 
-        return redirect(url_for("retrieve_feedback"))
+        return redirect(url_for("view_feedback"))
     return render_template('feedback.html', form=feedback_form)
+
+#Nicholas
+@app.route('/viewFeedback')
+def view_feedback():
+    feedback_dict = {}
+    db = shelve.open('feedback.db', 'r')
+    feedback_dict = db["Feedback"]
+    db.close()
+
+    feedback_list = []
+    for key in feedback_dict:
+        feedback = feedback_dict.get(key)
+        feedback_list.append(feedback)
+
+    return render_template('viewFeedback.html', count=len(feedback_list), feedback_list=feedback_list)
 
 #Nicholas
 @app.route('/retrieveFeedback', methods=['GET', 'POST'])
