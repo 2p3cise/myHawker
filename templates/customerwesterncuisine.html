@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Western Cuisine{% endblock %}
+
+{% block content %}
+<div class="row gy-5">
+    <div class="indianheader"><img src="{{ url_for('static', filename= 'images/westerncuisine.png')}}" height="200px" width="300px"></div>
+    <p class="indiandesc">
+        In Western delights we have food ranging from all over the Western countries, from Belgium to the USA, you name it. 
+        For our stores, from Sengkang to Jurong we employ the finest cooking graduates from all across Singapore to being in a 
+        unique, youthful and uplifting taste that can only be brought possible by teenagers.
+    </p>
+{% for dish in dishes_list %}
+    {% if dish.get_cuisine() == "western" %}
+    <div class="col-xl-4" id="dishitem">
+        <img src="/{{ dish.get_image() }}" height="370px" width="370px">
+        <h4>{{ dish.get_dish_name() }}</h4>
+        <p>
+            {{ dish.get_description() }}
+        </p>
+        <p>
+            ${{ dish.get_price() }}
+        </p>
+        <form action="{{url_for('delete_dish', id=dish.get_dish_id())}}" method="POST">
+            <input type="submit" value="Delete" class="btn btn-danger">
+        </form>
+    </div>
+    {% endif %}   
+{% endfor %}
+</div>
+{% endblock %}

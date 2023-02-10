@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Retrieve Dish{% endblock %}
+
+{% block content %}
+<h1 class="display-6" align="middle">All the Dishes</h1>
+<div>
+  {% if count == 0 %}
+  <p>There are no dishes.</p>
+  {% elif count == 1 %}
+  <p>All dishes</p>
+  {% else %}
+  <p>There are {{ count }} dishes.</p>
+  {% endif %}
+</div>
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Dish's ID</th>
+        <th>Dish Name</th>
+        <th>Price</th>
+        <th>description</th>
+        <th>Cuisine</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for dish in dishes_list %}
+     <tr>
+        <td>{{ dish.get_dish_id() }}</td>
+        <td>{{ dish.get_dish_name() }}</td>
+        <td>${{ dish.get_price() }}</td>
+        <td>{{ dish.get_description() }}</td>
+        <td>{{ dish.get_cuisine() }}</td>
+        <td><a href="/updateDish/{{dish.get_dish_id()}}" class="btn btn-outline-primary">Update</a></td>
+        <td><form action="{{url_for('delete_dish', id=dish.get_dish_id())}}" method="POST">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
+     </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
