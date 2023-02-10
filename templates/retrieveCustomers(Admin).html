@@ -1,0 +1,63 @@
+#Nicholas
+{% extends "base.html" %}
+{% block title %}Retrieve Customers{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Accounts</h1>
+<div>
+    {% if count == 0 %}
+    <p>There are no Account.</p>
+    {% elif count == 1 %}
+    <p>There is 1 Account.</p>
+    {% else %}
+    <p>There are {{ count }} Accounts.</p>
+    {% endif %}
+</div>
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+
+
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Date Joined</th>
+            <th>Address</th>
+            <th>Membership</th>
+            <th>Remarks</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for customer in customers_list %}
+        <tr>
+
+            <td>{{ customer.get_first_name() }}</td>
+            <td>{{ customer.get_last_name() }}</td>
+            <td>{{ customer.get_gender() }}</td>
+            <td>{{ customer.get_email() }}</td>
+            <td>{{ customer.get_date_joined() }}</td>
+            <td>{{ customer.get_address() }}</td>
+            {% if customer.get_membership() == "B" %}
+            <td>Bronze</td>
+            {% elif customer.get_membership() == "S" %}
+            <td>Silver</td>
+            {% elif customer.get_membership() == "G" %}
+            <td>Gold</td>
+            {% endif %}
+            <td>{{ customer.get_remarks() }}</td>
+            <td><a href="/updateCustomer/{{customer.get_user_id()}}" class="btn btn-warning">Update</a></td>
+            <td>
+                <form action="{{url_for('delete_customer', id=customer.get_user_id(), email=customer.get_email())}}" method="POST">
+                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{customer.get_first_name()}} {{customer.get_last_name()}}?');">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
