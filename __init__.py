@@ -90,7 +90,7 @@ def retrieve_customers():
 
     return render_template('retrieveCustomers.html', count=len(customers_list), customers_list=customers_list)
 
-#Nicholas (WORK IN PROGRESS)
+#Nicholas 
 @app.route('/updateCustomer/<int:id>/', methods=['GET', 'POST'])
 def update_customer(id):
     update_customer_form = CreateCustomerForm(request.form)
@@ -107,6 +107,7 @@ def update_customer(id):
         customer.set_date_joined(update_customer_form.date_joined.data)
         customer.set_address(update_customer_form.address.data)
         customer.set_membership(update_customer_form.membership.data)
+        customer.set_password(update_customer_form.password.data)
         customer.set_remarks(update_customer_form.remarks.data)
 
         db['Customers'] = customers_dict
@@ -127,6 +128,7 @@ def update_customer(id):
         update_customer_form.date_joined.data = customer.get_date_joined()
         update_customer_form.address.data = customer.get_address()
         update_customer_form.membership.data = customer.get_membership()
+        update_customer_form.password.data = customer.get_password()
         update_customer_form.remarks.data = customer.get_remarks()
 
         return render_template('updateCustomer.html', form=update_customer_form)
