@@ -1,19 +1,233 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, session
+from Forms import CreateDishForm, CreateCustomerForm, LoginForm
+import shelve, Dishes, Customers
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.secret_key = 'abc123'
+app.secret_key = "abc123"
 
 @app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route('/indianCuisine')
-def indianCuisine():
-    return render_template('indianCuisine.html')
+@app.route('/contactUs')
+def contact_us():
+    return render_template('contactUs.html')
 
-@app.route('/westernDelights')
-def westernDelights():
-    return render_template('westernDelights.html')
+@app.route('/createDish', methods=['GET', 'POST'])
+def create_dish():
+    create_dish_form = CreateDishForm(request.form)
+    if request.method == 'POST' and create_dish_form.validate():
+        dishes_dict = {}
+        db = shelve.open('dish.db', 'c')
+
+        try:
+            dishes_dict = db['Dishes']
+        except:
+            print("Error in retrieving Users from dish.db")
+
+        
+
+        dish = Dishes.Dish(create_dish_form.dish_name.data, create_dish_form.price.data, create_dish_form.description.data, create_dish_form.cuisine.data)
+
+        images = request.files.getlist("image")
+        basePath = "static/images/dishes/" + str(dish.get_dish_id())
+        os.makedirs(basePath)
+
+        imagePath = secure_filename(images[0].filename)
+        path = os.path.join(basePath, imagePath)
+        images[0].save(path)
+        dish.set_image(path)
+
+
+        dishes_dict[dish.get_dish_id()] = dish
+        db['Dishes'] = dishes_dict
+
+        db.close()
+
+        return redirect(url_for('retrieve_dishes'))
+    return render_template('createDish.html', form=create_dish_form)
+
+
+@app.route('/retrieveDish')
+def retrieve_dishes():
+    dishes_dict = {}
+    db = shelve.open('dish.db', 'r')
+    dishes_dict = db['Dishes']
+    db.close()
+
+    dishes_list = []
+    for key in dishes_dict:
+        dish = dishes_dict.get(key)
+        dishes_list.append(dish)
+
+    return render_template('retrieveDish.html', count=len(dishes_list), dishes_list=dishes_list)
+
+
+@app.route('/updateDish/<int:id>/', methods=['GET', 'POST'])
+def update_dish(id):
+    update_dish_form = CreateDishForm(request.form)
+    if request.method == 'POST' and update_dish_form.validate():
+        dishes_dict = {}
+        db = shelve.open('dish.db', 'w')
+        dishes_dict = db['Dishes']
+
+        dish = dishes_dict.get(id)
+        dish.set_dish_name(update_dish_form.dish_name.data)
+        dish.set_price(update_dish_form.price.data)
+        dish.set_description(update_dish_form.description.data)
+        dish.set_cuisine(update_dish_form.cuisine.data)
+
+        images = request.files.getlist("image")
+        if images[0].filename != "":
+            basePath = "static/images/dishes/" + str(dish.get_dish_id())
+
+            imagePath = secure_filename(images[0].filename)
+            path = os.path.join(basePath, imagePath)
+            images[0].save(path)
+            dish.set_image(path)
+
+        db['Dishes'] = dishes_dict
+        db.close()
+
+        return redirect(url_for('retrieve_dishes'))
+    else:
+        dishes_dict = {}
+        db = shelve.open('dish.db', 'r')
+        dishes_dict = db['Dishes']
+        db.close()
+
+        dish = dishes_dict.get(id)
+        update_dish_form.dish_name.data = dish.get_dish_name()
+        update_dish_form.price.data = dish.get_price()
+        update_dish_form.description.data = dish.get_description()
+        update_dish_form.cuisine.data = dish.get_cuisine()
+        update_dish_form.image.data = dish.get_image()
+
+        return render_template('updateDish.html', form=update_dish_form)
+
+
+@app.route('/deleteDish/<int:id>', methods=['POST'])
+def delete_dish(id):
+    dishes_dict = {}
+    db = shelve.open('dish.db', 'w')
+    dishes_dict = db['Dishes']
+    dishes_dict.pop(id)
+    db['Dishes'] = dishes_dict
+    db.close()
+    return redirect(url_for('retrieve_dishes'))
+
+@app.route('/addtocart/<int:id>', methods=['POST'])
+def add_to_cart(id):
+    dishes_dict = {}
+    db = shelve.open('dish.db', 'w')
+    dishes_dict = db['Dishes']
+    dishes_dict.pop(id)
+    db['Dishes'] = dishes_dict
+    db.close()
+    return redirect(url_for('retrieve_dishes'))
+
+
+@app.route('/adminindiancuisine')
+def adminindian_cuisine():
+    dishes_dict = {}
+    db = shelve.open('dish.db', 'r')
+    dishes_dict = db['Dishes']
+    db.close()
+
+    dishes_list = []
+    for key in dishes_dict:
+        dish = dishes_dict.get(key)
+        dishes_list.append(dish)
+
+    return render_template('adminindiancuisine.html', count=len(dishes_list), dishes_list=dishes_list)
+
+@app.route('/customerindiancuisine')
+def customerindian_cuisine():
+    dishes_dict = {}
+    db = shelve.open('dish.db', 'r')
+    dishes_dict = db['Dishes']
+    db.close()
+
+    dishes_list = []
+    for key in dishes_dict:
+        dish = dishes_dict.get(key)
+        dishes_list.append(dish)
+
+    return render_template('customerindiancuisine.html', count=len(dishes_list), dishes_list=dishes_list)
+
+@app.route('/adminwesterncuisine')
+def adminwestern():
+    dishes_dict = {}
+    db = shelve.open('dish.db', 'r')
+    dishes_dict = db['Dishes']
+    db.close()
+
+    dishes_list = []
+    for key in dishes_dict:
+        dish = dishes_dict.get(key)
+        dishes_list.append(dish)
+
+    return render_template('adminwesterncuisine.html', count=len(dishes_list), dishes_list=dishes_list)
+
+@app.route('/customerwesterncuisine')
+def customerwestern():
+    dishes_dict = {}
+    db = shelve.open('dish.db', 'r')
+    dishes_dict = db['Dishes']
+    db.close()
+
+    dishes_list = []
+    for key in dishes_dict:
+        dish = dishes_dict.get(key)
+        dishes_list.append(dish)
+
+    return render_template('customerwesterncuisine.html', count=len(dishes_list), dishes_list=dishes_list)
+
+
+@app.route('/adminmixedrice')
+def adminmixedrice():
+    dishes_dict = {}
+    db = shelve.open('dish.db', 'r')
+    dishes_dict = db['Dishes']
+    db.close()
+
+    dishes_list = []
+    for key in dishes_dict:
+        dish = dishes_dict.get(key)
+        dishes_list.append(dish)
+
+    return render_template('adminmixedrice.html', count=len(dishes_list), dishes_list=dishes_list)
+
+@app.route('/customermixedrice')
+def customermixedrice():
+    dishes_dict = {}
+    db = shelve.open('dish.db', 'r')
+    dishes_dict = db['Dishes']
+    db.close()
+
+    dishes_list = []
+    for key in dishes_dict:
+        dish = dishes_dict.get(key)
+        dishes_list.append(dish)
+
+    return render_template('customermixedrice.html', count=len(dishes_list), dishes_list=dishes_list)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #Nicholas
 @app.route('/login', methods=['GET', 'POST'])
@@ -52,7 +266,7 @@ def create_customer():
         except:
             print("Error in retrieving Customers from customer.db.")
 
-        customer = Customer.Customer(create_customer_form.first_name.data, create_customer_form.last_name.data,
+        customer = Customers.Customer(create_customer_form.first_name.data, create_customer_form.last_name.data,
                                      create_customer_form.gender.data, create_customer_form.membership.data,
                                      create_customer_form.remarks.data, create_customer_form.email.data,
                                      create_customer_form.date_joined.data, create_customer_form.address.data,
@@ -76,7 +290,7 @@ def create_customer():
     return render_template('createCustomer.html', form=create_customer_form)
 
 #Nicholas
-@app.route('/retrieveCustomers')
+@app.route('/adminretrieveCustomer')
 def retrieve_customers():
     customers_dict = {}
     db = shelve.open('customer.db', 'r')
@@ -88,7 +302,7 @@ def retrieve_customers():
         customer = customers_dict.get(key)
         customers_list.append(customer)
 
-    return render_template('retrieveCustomers.html', count=len(customers_list), customers_list=customers_list)
+    return render_template('adminretrieveCustomer.html', count=len(customers_list), customers_list=customers_list)
 
 #Nicholas 
 @app.route('/updateCustomer/<int:id>/', methods=['GET', 'POST'])
@@ -100,10 +314,6 @@ def update_customer(id):
         customers_dict = db['Customers']
 
         customer = customers_dict.get(id)
-        customer.set_first_name(update_customer_form.first_name.data)
-        customer.set_last_name(update_customer_form.last_name.data)
-        customer.set_gender(update_customer_form.gender.data)
-        customer.set_email(update_customer_form.email.data)
         customer.set_date_joined(update_customer_form.date_joined.data)
         customer.set_address(update_customer_form.address.data)
         customer.set_membership(update_customer_form.membership.data)
@@ -113,7 +323,8 @@ def update_customer(id):
         db['Customers'] = customers_dict
         db.close()
 
-        return redirect(url_for('retrieve_customers'))
+        return redirect(url_for('retrieve_dishes'))
+
     else:
         customers_dict = {}
         db = shelve.open('customer.db', 'r')
@@ -121,17 +332,14 @@ def update_customer(id):
         db.close()
 
         customer = customers_dict.get(id)
-        update_customer_form.first_name.data = customer.get_first_name()
-        update_customer_form.last_name.data = customer.get_last_name()
-        update_customer_form.gender.data = customer.get_gender()
-        update_customer_form.email.data = customer.get_email()
-        update_customer_form.date_joined.data = customer.get_date_joined()
-        update_customer_form.address.data = customer.get_address()
-        update_customer_form.membership.data = customer.get_membership()
-        update_customer_form.password.data = customer.get_password()
-        update_customer_form.remarks.data = customer.get_remarks()
+        update_customer_form.date_joined.data = Customers.get_date_joined()
+        update_customer_form.address.data = Customers.get_address()
+        update_customer_form.membership.data = Customers.get_membership()
+        update_customer_form.password.data = Customers.get_password()
+        update_customer_form.remarks.data = Customers.get_remarks()
 
         return render_template('updateCustomer.html', form=update_customer_form)
+
 
 #Nicholas
 @app.route('/deleteCustomer/<int:id>/<email>', methods=['POST'])
@@ -153,6 +361,7 @@ def delete_customer(id, email):
     db.close()
 
     return redirect(url_for('retrieve_customers'))
+
 
 #Nicholas
 @app.route('/feedback', methods=['GET', 'POST'])
