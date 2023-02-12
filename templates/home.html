@@ -1,7 +1,41 @@
 {% extends "base.html" %}
-{% block title %} Hi {% endblock %}
+{% block title %}Library Loan System - Home{% endblock %}
 
 {% block content %}
-<h1 class="display-4">Home</h1>
-<p>Hello world!</p>
+<style>
+.carousel-item img {
+  height: 300px;
+  object-fit: cover;
+}
+
+.mb-3 splash-title fw-bold{text-align: center;}
+</style>
+<div class="container">
+  <div class="row d-flex align-items-center justify-content-center mt-5">
+    <div class="col-md-6 order-1 order-md-0 mt-3 mt-md-0">
+      <h2 class="mb-3 splash-title fw-bold">ENJOY OUR <span style="color: #cc3400">ITEM</span> OF THE DAY</h2>
+      <button type="button" class="btn btn-primary btn-lg">Order Now</button>
+    </div>
+    <div class="col-md-6 order-0 order-md-1">
+      <div class="carousel-container">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="2000">
+          <div class="carousel-inner">
+            <div class="carousel-item active ratio ratio-16x9">
+              <img class="d-block w-100" src="{{ url_for('static', filename= 'images/maxresdefault (1).jpg')}}" alt="First slide">
+            </div>
+            <div class="carousel-item ratio ratio-16x9">
+              <img class="d-block w-100" src="{{ url_for('static', filename= 'images/sheeesh.jpg')}}" alt="Second slide">
+            </div>
+            <div class="carousel-item ratio ratio-16x9">
+              <img class="d-block w-100" src="{{ url_for('static', filename= 'images/pratasingapore3.jpg')}}" alt="Third slide">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<h2 class="mb-3 splash-title fw-bold text-center"><span style="color: #cc3400">Popular Dishes</span></h2>
 {% endblock %}
