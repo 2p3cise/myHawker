@@ -54,3 +54,15 @@ class CreateCustomerForm(Form):
     def validate_last_name(form, last_name):
         if not form.last_name.data.isalpha():
             raise ValidationError("Last Name shouldn't contain digits")
+            
+            
+   class CreateDailyDishForm(Form):
+    daily_dish = StringField('Dish Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+    daily_price = DecimalField('Price', [validators.DataRequired()])
+    daily_image = FileField("Product Image(Daily Food)", validators=[])
+    weekly_store = StringField('Store Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+    weekly_description = TextAreaField('Description', [validators.Length(min=10, max=1024), validators.DataRequired()])
+
+    def validate_price(form, price):
+        if form.price.data < 0:
+            raise ValidationError("Cannot input negative numbers!")         
