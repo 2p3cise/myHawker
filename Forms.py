@@ -28,6 +28,13 @@ class LoginForm(Form):
     password = PasswordField('Password', [validators.DataRequired()])
 
 
+#Nicholas(New)
+class UpdateCredentialsForm(Form):
+    current_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=8)])
+    new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=8)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('new_password')])
+
+
 #Nicholas
 class CreateCustomerForm(Form):
     first_name = StringField('First Name', [validators.Length(min=1, max=150), validators.DataRequired()])
