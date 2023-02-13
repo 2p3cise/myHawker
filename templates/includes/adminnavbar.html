@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="background-color: #FFF8EE">
+    <div class="container-fluid">
+      <img src="{{ url_for('static', filename= 'images/logo.jpg')}}" alt="Mike" height="100px" width="140px">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Menu</a>
+            <ul class="dropdown-menu">
+             <li><a class="dropdown-item" href="/adminindiancuisine">Admin Indian Cuisine</a></li>
+             <li><a class="dropdown-item" href="/adminwesterncuisine">Admin Western Cuisine</a></li>
+             <li><a class="dropdown-item" href="/adminmixedrice">Admin Mixed Rice</a></li>
+             <li><a class="dropdown-item" href="/adminayampenyet">Admin Ayam Penyet</a></li>
+             <li><a class="dropdown-item" href="/adminretrieveCustomer">Admin Retrieve Customer</a></li>
+             </ul>
+           </li>
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin Dishes, Vouchers</a>
+            <ul class="dropdown-menu">
+             <li><a class="dropdown-item" href="/createDish">Create Dish</a></li>
+             <li><a class="dropdown-item" href="/retrieveDish">Retrieve Dish</a></li>
+             <li><a class="dropdown-item" href="/voucherPage">Vouchers</a></li>
+             <li><a class="dropdown-item" href="/staffCreateVoucher">Staff create Vouchers</a></li>
+             </ul>
+           </li>
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Login</a>
+            <ul class="dropdown-menu">
+             <li><a class="dropdown-item" href="/login">Login</a></li>
+             <li><a class="dropdown-item" href="/logout">Logout</a></li>
+             </ul>
+           </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
