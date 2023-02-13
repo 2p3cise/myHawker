@@ -41,11 +41,11 @@
           <td>{{ customer.get_date_joined() }}</td>
           <td>{{ customer.get_address() }}</td>
           {% if customer.get_membership() == "B" %}
-            <td>Bronze</td>
+            <td>Vegetarian</td>
           {% elif customer.get_membership() == "S" %}
-            <td>Silver</td>
+            <td>Vegan</td>
           {% elif customer.get_membership() == "G" %}
-            <td>Gold</td>
+            <td>None</td>
           {% endif %}
           <td>{{ customer.get_remarks() }}</td>
           <td><a href="/updateCustomer/{{customer.get_user_id()}}" class="btn btn-warning">Update</a></td>
@@ -90,4 +90,3 @@
   </table>
 </div>
 {% endblock %}
-
