@@ -7,9 +7,38 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = "abc123"
 
+
+#Nicholas
 @app.route('/')
 def home():
-    return render_template('home.html')
+    daily_dishes_dict = {}
+    db = shelve.open('daily_dish.db', 'r')
+    daily_dishes_dict = db['Homepage']
+    db.close()
+
+    daily_dishes_list = []
+    for key in daily_dishes_dict:
+        daily_dish = daily_dishes_dict.get(key)
+        daily_dishes_list.append(daily_dish)
+
+    return render_template('home.html', count=len(daily_dishes_list), daily_dishes_list=daily_dishes_list)
+
+
+#Nicholas
+@app.route('/adminHome')
+def home_admin():
+    daily_dishes_dict = {}
+    db = shelve.open('daily_dish.db', 'r')
+    daily_dishes_dict = db['Homepage']
+    db.close()
+
+    daily_dishes_list = []
+    for key in daily_dishes_dict:
+        daily_dish = daily_dishes_dict.get(key)
+        daily_dishes_list.append(daily_dish)
+
+    return render_template('adminHome.html', count=len(daily_dishes_list), daily_dishes_list=daily_dishes_list)
+
 
 #Nicholas
 @app.route('/login', methods=['GET', 'POST'])
@@ -36,6 +65,7 @@ def login():
 
         db.close()
     return render_template('login.html', form=login_form, error=error)
+
 
 #Nicholas
 @app.route('/updateCredentials', methods=['GET', 'POST'])
@@ -68,9 +98,109 @@ def update_credentials():
             db.close()
     return render_template('updateCredentials.html', form=update_form, error=error)
 
+
+#Nicholas
 @app.route('/contactUs')
 def contact_us():
     return render_template('contactUs.html')
+
+
+#Nicholas
+@app.route('/createDailyDish', methods=['GET', 'POST'])
+def create_daily_dish():
+    create_daily_dish_form = CreateDailyDishForm(request.form)
+    if request.method == 'POST' and create_daily_dish_form.validate():
+        daily_dishes_dict = {}
+        db = shelve.open('daily_dish.db', 'c')
+
+        try:
+            daily_dishes_dict = db['Homepage']
+        except:
+            print("Error in retrieving Daily Dish from daily_dish.db")
+
+        daily_dish = Homepage.DailyDish(create_daily_dish_form.daily_dish.data, create_daily_dish_form.daily_price.data,
+                                        create_daily_dish_form.weekly_store.data,
+                                        create_daily_dish_form.weekly_description.data)
+
+        images = request.files.getlist("daily_image")
+        basePath = "static/images/dishes/" + str(daily_dish.get_daily_dish_id())
+        os.makedirs(basePath)
+
+        imagePath = secure_filename(images[0].filename)
+        path = os.path.join(basePath, imagePath)
+        images[0].save(path)
+        daily_dish.set_daily_image(path)
+
+
+        daily_dishes_dict[daily_dish.get_daily_dish_id()] = daily_dish
+        db['Homepage'] = daily_dishes_dict
+
+        db.close()
+
+        return redirect(url_for('retrieve_daily_dishes'))
+    return render_template('createDailyDish.html', form=create_daily_dish_form)
+
+
+#Nicholas
+@app.route('/retrieveDailyDish')
+def retrieve_daily_dishes():
+    daily_dishes_dict = {}
+    db = shelve.open('daily_dish.db', 'r')
+    daily_dishes_dict = db['Homepage']
+    db.close()
+
+    daily_dishes_list = []
+    for key in daily_dishes_dict:
+        daily_dish = daily_dishes_dict.get(key)
+        daily_dishes_list.append(daily_dish)
+
+    return render_template('retrieveDailyDish.html', count=len(daily_dishes_list), daily_dishes_list=daily_dishes_list)
+
+
+#Nicholas
+@app.route('/updateDailyDish/<int:id>/', methods=['GET', 'POST'])
+def update_daily_dish(id):
+    update_daily_dish_form = CreateDailyDishForm(request.form)
+    if request.method == 'POST' and update_daily_dish_form.validate():
+        daily_dishes_dict = {}
+        db = shelve.open('daily_dish.db', 'w')
+        daily_dishes_dict = db['Homepage']
+
+        daily_dish = daily_dishes_dict.get(id)
+        daily_dish.set_daily_dish(update_daily_dish_form.daily_dish.data)
+        daily_dish.set_daily_price(update_daily_dish_form.daily_price.data)
+        daily_dish.set_weekly_store(update_daily_dish_form.weekly_store.data)
+        daily_dish.set_weekly_description(update_daily_dish_form.weekly_description.data)
+
+        images = request.files.getlist("daily_image")
+        if images[0].filename != "":
+            basePath = "static/images/dishes/" + str(daily_dish.get_daily_dish_id())
+
+            imagePath = secure_filename(images[0].filename)
+            path = os.path.join(basePath, imagePath)
+            images[0].save(path)
+            daily_dish.set_daily_image(path)
+
+
+        db['Homepage'] = daily_dishes_dict
+        db.close()
+
+        return redirect(url_for('home_admin'))
+    else:
+        daily_dishes_dict = {}
+        db = shelve.open('daily_dish.db', 'r')
+        daily_dishes_dict = db['Homepage']
+        db.close()
+
+        daily_dish = daily_dishes_dict.get(id)
+        update_daily_dish_form.daily_dish.data = daily_dish.get_daily_dish()
+        update_daily_dish_form.daily_price.data = daily_dish.get_daily_price()
+        update_daily_dish_form.daily_image.data = daily_dish.get_daily_image()
+        update_daily_dish_form.weekly_store.data = daily_dish.get_weekly_store()
+        update_daily_dish_form.weekly_description.data = daily_dish.get_weekly_description()
+
+        return render_template('updateDailyDish.html', form=update_daily_dish_form)
+
 
 @app.route('/createDish', methods=['GET', 'POST'])
 def create_dish():
