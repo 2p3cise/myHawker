@@ -11,6 +11,63 @@ app.secret_key = "abc123"
 def home():
     return render_template('home.html')
 
+#Nicholas
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    login_form = LoginForm(request.form)
+    error = None
+    if request.method == 'POST' and login_form.validate():
+        email = login_form.email.data
+        password = login_form.password.data
+        if email == "secretadmin@myHawker.com" and password == "AdminAccess":
+            return redirect(url_for('home_admin'))
+        else:
+            db = shelve.open('user_credentials.db', 'c')
+            try:
+                user_credentials = db['user_credentials']
+            except:
+                print("Error in retrieving user_credentials from user_credentials.db.")
+
+            if email in user_credentials and user_credentials[email] == password:
+                session['email'] = email
+                return redirect(url_for('home'))
+            else:
+                error = 'Invalid username or password. Please try again.'
+
+        db.close()
+    return render_template('login.html', form=login_form, error=error)
+
+#Nicholas
+@app.route('/updateCredentials', methods=['GET', 'POST'])
+def update_credentials():
+    update_form = UpdateCredentialsForm(request.form)
+    error = None
+    if request.method == 'POST' and update_form.validate():
+        db = shelve.open('user_credentials.db', 'w')
+        try:
+            user_credentials = db['user_credentials']
+        except:
+            user_credentials = {}
+
+        if session['email'] in user_credentials:
+            if user_credentials[session['email']] == update_form.current_password.data:
+                if update_form.current_password.data != update_form.new_password.data:
+                    if update_form.new_password.data == update_form.confirm_password.data:
+                        user_credentials[session['email']] = update_form.new_password.data
+                        db['user_credentials'] = user_credentials
+                        db.close()
+                        return redirect(url_for('home'))
+                    else:
+                        error = 'New password and confirmation do not match. Please try again.'
+                else:
+                    error = 'New password is the same as the current password.'
+            else:
+                error = 'Current password is incorrect. Please try again.'
+        else:
+            error = 'Error in updating the credentials. Please try again.'
+            db.close()
+    return render_template('updateCredentials.html', form=update_form, error=error)
+
 @app.route('/contactUs')
 def contact_us():
     return render_template('contactUs.html')
