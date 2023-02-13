@@ -30,9 +30,9 @@ class LoginForm(Form):
 
 #Nicholas(New)
 class UpdateCredentialsForm(Form):
-    current_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=8)])
-    new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=8)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('new_password')])
+    current_password = PasswordField('Current Password', [validators.DataRequired(), validators.Length(min=8)])
+    new_password = PasswordField('New Password', [validators.DataRequired(), validators.Length(min=8)])
+    confirm_password = PasswordField('Confirm Password', [validators.DataRequired(), validators.EqualTo('new_password')])
 
 
 #Nicholas
