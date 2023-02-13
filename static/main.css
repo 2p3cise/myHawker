@@ -105,3 +105,100 @@ p {
 }
 
 /* ---------------------------end of CSS for Gacha------------------------------- */
+
+body {
+  font-family: "Roboto", sans-serif;
+  background: #FFF8EE;
+}
+
+.form-group {
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 35px;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+h1.display-4 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 35px;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+p {
+  font-style: normal;
+  font-size: 20px;
+  text-align: center;
+}
+
+form.login {
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #FFF8EE;
+  border-radius: 5px;
+  outline-style: solid;
+  outline-color: #CC3400;
+}
+
+form.register {
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+input.login[type="submit"] {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 1rem;
+  background-color: #CC3400;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+input.register[type="submit"] {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 1rem;
+  background-color: yellowgreen;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+table {
+  background-color: white;
+  text-align: center;
+}
+
+form.feedback {
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #FFF8EE;
+  border-radius: 5px;
+  outline-style: solid;
+  outline-color: #CC3400;
+}
+
+h2 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+
