@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% from "includes/formHelper.html" import render_field %}
+{% block content %}
+<style>
+    .carousel-item img {
+        height: 300px;
+        object-fit: cover;
+    }
+</style>
+{% for daily_dish in daily_dishes_list %}
+<div class="container">
+    <div class="row d-flex align-items-center justify-content-center mt-5">
+        <div class="col-md-6 order-1 order-md-0 mt-3 mt-md-0">
+            <h1 class="text-danger">ADMIN HOMEPAGE</h1>
+            <h1 class="mb-3">ENJOY OUR ITEM OF THE DAY</h1>
+            <p>{{ daily_dish.get_daily_dish() }}: ${{ daily_dish.get_daily_price() }}</p>
+            <img class="d-block w-100" src="/{{ daily_dish.get_daily_image() }}"
+                 alt="food">
+        </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-center mt-3">
+        <a href="/updateDailyDish/{{daily_dish.get_daily_dish_id()}}" class="btn btn-outline-primary">Update</a>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row d-flex align-items-center justify-content-center mt-5">
+        <div class="col-md-6 order-1 order-md-1 mt-3 mt-md-0">
+            <h2 class="mb-3 splash-title fw-bold">OUR POPULAR DISHES</h2>
+            <p>These dishes are well-liked among our customers!</p>
+        </div>
+        <div class="col-md-6 order-0 order-md-0">
+            <div class="carousel-container">
+                <div id="carouselPopularFood" class="carousel slide" data-ride="carousel" data-interval="2000">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active ratio ratio-16x9">
+                            <img class="d-block w-100"
+                                 src="{{ url_for('static', filename= 'images/mixedrice.jpg')}}"
+                                 alt="First slide">
+                        </div>
+                        <div class="carousel-item ratio ratio-16x9">
+                            <img class="d-block w-100" src="{{ url_for('static', filename= 'images/westernfood.png')}}"
+                                 alt="Second slide">
+                        </div>
+                        <div class="carousel-item ratio ratio-16x9">
+                            <img class="d-block w-100"
+                                 src="{{ url_for('static', filename= 'images/prata.jpg')}}" alt="Third slide">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row d-flex align-items-center justify-content-center mt-5">
+        <div class="col-md-6 order-1 order-md-0 mt-3 mt-md-0">
+            <h2 class="mb-3 splash-title fw-bold">STORE OF THE WEEK</h2>
+            <h2 class="mb-3 splash-title fw-bold">{{ daily_dish.get_weekly_store() }}</h2>
+            <p>{{ daily_dish.get_weekly_description() }}</p>
+            <div class="text-center">
+                <a href="/updateDailyDish/{{daily_dish.get_daily_dish_id()}}" class="btn btn-outline-primary">Update</a>
+            </div>
+        </div>
+        <div class="col-md-6 order-0 order-md-1">
+            <img class="d-block w-100" src="{{ url_for('static', filename= 'images/chickenbiryani2.jpg')}}" alt="food">
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row d-flex align-items-center justify-content-center mt-3 mb-3">
+        <div class="col-md-6 order-1 order-md-1 mt-3 mt-md-0">
+            <h2 class="mb-3 splash-title fw-bold">VIEW OUR FULL MENU</h2>
+            <p>Check out our large variety of food!</p>
+            <div class="carousel-container">
+                <div id="ViewAllFood" class="carousel slide" data-ride="carousel" data-interval="2000">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active ratio ratio-16x9">
+                            <img class="d-block w-100"
+                                 src="{{ url_for('static', filename= 'images/mixedrice2.jpg')}}"
+                                 alt="First slide">
+                        </div>
+                        <div class="carousel-item ratio ratio-16x9">
+                            <img class="d-block w-100" src="{{ url_for('static', filename= 'images/westernfood.jpg')}}"
+                                 alt="Second slide">
+                        </div>
+                        <div class="carousel-item ratio ratio-16x9">
+                            <img class="d-block w-100"
+                                 src="{{ url_for('static', filename= 'images/chickenbiryani.jpg')}}" alt="Third slide">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}
