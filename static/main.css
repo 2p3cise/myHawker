@@ -115,13 +115,6 @@ body {
   margin-bottom: 2rem;
 }
 
-h1 {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 35px;
-  text-align: center;
-  margin-top: 3rem;
-}
 
 h1.display-4 {
   font-style: normal;
@@ -131,11 +124,6 @@ h1.display-4 {
   margin-top: 3rem;
 }
 
-p {
-  font-style: normal;
-  font-size: 20px;
-  text-align: center;
-}
 
 form.login {
   max-width: 550px;
