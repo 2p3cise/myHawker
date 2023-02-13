@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Retrieve Dish and Store{% endblock %}
+
+{% block content %}
+<h1 class="display-6" align="middle">All the Dishes and Stores</h1>
+<div>
+  {% if count == 0 %}
+  <p>There are no dishes.</p>
+  {% elif count == 1 %}
+  <p>All dishes</p>
+  {% else %}
+  <p>There are {{ count }} dishes.</p>
+  {% endif %}
+</div>
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Dish Name</th>
+        <th>Price</th>
+        <th>Store Name</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for daily_dish in daily_dishes_list %}
+     <tr>
+        <td>{{ daily_dish.get_daily_dish_id() }}</td>
+        <td>{{ daily_dish.get_daily_dish() }}</td>
+        <td>${{ daily_dish.get_daily_price() }}</td>
+        <td>{{ daily_dish.get_weekly_store() }}</td>
+        <td>{{ daily_dish.get_weekly_description() }}</td>
+        <td><a href="/updateDish/{{daily_dish.get_daily_dish_id()}}" class="btn btn-outline-primary">Update</a></td>
+     </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
