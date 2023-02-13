@@ -40,7 +40,6 @@ def home_admin():
     return render_template('adminHome.html', count=len(daily_dishes_list), daily_dishes_list=daily_dishes_list)
 
 
-#Nicholas
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm(request.form)
@@ -65,7 +64,6 @@ def login():
 
         db.close()
     return render_template('login.html', form=login_form, error=error)
-
 
 #Nicholas
 @app.route('/updateCredentials', methods=['GET', 'POST'])
@@ -410,35 +408,6 @@ def customermixedrice():
 
 
 
-
-
-
-
-
-
-#Nicholas
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    login_form = LoginForm(request.form)
-    error = None
-    if request.method == 'POST' and login_form.validate():
-        email = login_form.email.data
-        password = login_form.password.data
-        db = shelve.open('user_credentials.db', 'c')
-
-        try:
-            user_credentials = db['user_credentials']
-        except:
-            print("Error in retrieving user_credentials from user_credentials.db.")
-
-        if email in user_credentials and user_credentials[email] == password:
-            session['email'] = email
-            return redirect(url_for('home'))
-        else:
-            error = 'Invalid username or password. Please try again.'
-
-        db.close()
-    return render_template('login.html', form=login_form, error=error)
 
 #Nicholas
 @app.route('/createCustomer', methods=['GET', 'POST'])
