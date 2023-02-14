@@ -1,16 +1,15 @@
-<!-- Nicholas -->
 {% extends "base.html" %}
 {% block title %}{% endblock %}
 
 {% block content %}
-<h1 class="display-4">Your Feedback</h1>
+<h1 class="display-4">Admin Feedback</h1>
 <div>
     {% if count == 0 %}
     <p>You did not submit any feedback.</p>
     {% elif count == 1 %}
     <p>You have submitted 1 feedback.</p>
     {% else %}
-    <p>You have submitted {{ count }} feedbacks.</p>
+    <p>You have submitted {{ count }} feedback.</p>
     {% endif %}
 </div>
 <div class="table">
@@ -25,15 +24,15 @@
         {% for feedback in feedback_list %}
         <tr>
             {% if feedback.get_rating() == "VB" %}
-                <td>Very Bad</td>
+            <td>Very Bad</td>
             {% elif feedback.get_rating() == "B" %}
-                <td>Bad</td>
+            <td>Bad</td>
             {% elif feedback.get_rating() == "N" %}
-                <td>Neutral</td>
+            <td>Neutral</td>
             {% elif feedback.get_rating() == "G" %}
-                <td>Good</td>
+            <td>Good</td>
             {% elif feedback.get_rating() == "VG" %}
-                <td>Very Good</td>
+            <td>Very Good</td>
             {% endif %}
             <td>{{ feedback.get_remarks() }}</td>
         </tr>
@@ -42,3 +41,4 @@
     </table>
 </div>
 {% endblock %}
+
